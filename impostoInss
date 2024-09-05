@@ -1,0 +1,59 @@
+package com.mycompany.poo;
+import java.util.Scanner;
+
+public class POO {
+    
+    public static class Funcionario{
+        
+        private double salario;
+        
+        public Funcionario(double salario){
+            this.salario = salario;
+         }
+        
+        public double getSalario(){
+            return salario;
+         }
+        
+        public void setSalario(double salario){
+            this.salario = salario;
+         }
+        
+        public double calculoInss(){
+            double inss;
+            
+            if (salario <= 1402){
+               
+                inss = salario * 0.075;
+                
+             } else if (salario <= 2.666 && salario > 1412){
+               
+                 inss = salario * 0.09;
+                
+             }else if (salario > 2.666 && salario <= 4000){
+                
+                 inss = salario * 0.12;
+             
+             } else{
+               
+                 inss = salario * 0.14;
+                 }
+            
+              return inss;
+        
+          }
+  }
+    
+    public static void main(String[] args) {
+        
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("Digite o salario: ");
+        double salario = input.nextDouble();
+        
+        Funcionario funcionario = new Funcionario(salario);
+        
+        System.out.println("salario :" +funcionario.getSalario());
+        System.out.println("imposto inss :" +funcionario.calculoInss());
+    }
+}
