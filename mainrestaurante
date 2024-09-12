@@ -1,0 +1,102 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        Cliente[] clientes = new Cliente[10];
+        ItemMenu[] menu = new ItemMenu[10];
+        Pedido[] pedidos = new Pedido[10];
+        
+        int clienteCount = 0;
+        int menuCount = 0;
+        int pedidoCount = 0;
+        Cliente clienteAtual = null;
+        Pedido pedidoAtual = null;
+
+        // Adicionando itens de menu exemplo
+        menu[menuCount++] = new ItemMenu("Hambúrguer", "Principal", 15.0);
+        menu[menuCount++] = new ItemMenu("Pizza", "Principal", 25.0);
+        menu[menuCount++] = new ItemMenu("Suco", "Bebida", 7.0);
+        
+        while (true) {
+            System.out.println("Menu:");
+            System.out.println("1- Cadastrar cliente");
+            System.out.println("2- Visualizar menu");
+            System.out.println("3- Adicionar itens ao pedido");
+            System.out.println("4- Finalizar pedido");
+            System.out.println("5- Sair");
+            int opcao = scanner.nextInt();
+            scanner.nextLine(); // consumir o newline
+
+            switch (opcao) {
+                case 1:
+                    // Cadastrar cliente
+                    System.out.println("Digite o nome do cliente:");
+                    String nome = scanner.nextLine();
+                    System.out.println("Digite o endereço do cliente:");
+                    String endereco = scanner.nextLine();
+                    System.out.println("Digite o telefone do cliente:");
+                    String telefone = scanner.nextLine();
+                    
+                    clientes[clienteCount++] = new Cliente(nome, endereco, telefone);
+                    clienteAtual = clientes[clienteCount - 1];
+                    pedidoAtual = new Pedido(clienteAtual);
+                    System.out.println("Cliente cadastrado com sucesso.");
+                    break;
+
+                case 2:
+                    // Visualizar menu
+                    System.out.println("Menu:");
+                    for (int i = 0; i < menuCount; i++) {
+                        System.out.println(menu[i].getDetalhesItem());
+                    }
+                    break;
+
+                case 3:
+                    if (clienteAtual == null) {
+                        System.out.println("Nenhum cliente cadastrado. Por favor, cadastre um cliente primeiro.");
+                        break;
+                    }
+                    // Adicionar itens ao pedido
+                    System.out.println("Digite o nome do item para adicionar ao pedido:");
+                    String nomeItem = scanner.nextLine();
+                    boolean itemEncontrado = false;
+                    for (int i = 0; i < menuCount; i++) {
+                        if (menu[i].getDetalhesItem().contains(nomeItem)) {
+                            pedidoAtual.adicionarItem(menu[i]);
+                            System.out.println("Item adicionado ao pedido.");
+                            itemEncontrado = true;
+                            break;
+                        }
+                    }
+                    if (!itemEncontrado) {
+                        System.out.println("Item não encontrado no menu.");
+                    }
+                    break;
+
+                case 4:
+                    if (pedidoAtual == null) {
+                        System.out.println("Nenhum pedido criado. Por favor, crie um pedido primeiro.");
+                        break;
+                    }
+                    // Finalizar pedido
+                    pedidoAtual.atualizarStatus("Finalizado");
+                    pedidoAtual.visualizarPedido();
+                    pedidoAtual = null;
+                    clienteAtual = null;
+                    System.out.println("Pedido finalizado.");
+                    break;
+
+                case 5:
+                    // Sair
+                    System.out.println("Saindo...");
+                    scanner.close();
+                    return;
+
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+    }
+}
